@@ -67,11 +67,9 @@ docker run --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results
 
 Inside the container:
 
-````bash
-Inside the container:
 ```bash
 ./run_llm_testgen_and_validation.sh "model_name"
-````
+```
 
 **Available model types:**
 
@@ -79,8 +77,6 @@ Inside the container:
 - **OpenAI models** (prefix `GPT`): `GPT4o`, `GPT4oMini`, `GPT4Turbo`, `GPT35Turbo`
 - **Hugging Face models**: `Llama3370Instruct`, `Phi35MiniInstruct`, `Mistral7B03Instruct`
 - **Google Gemini models**: `Gemini25Flash`
-
-````
 
 Example models: `llama3.2`, `codellama`, `gpt-4`, etc.
 
@@ -99,7 +95,7 @@ docker ps -a
 
 # Copy results from container to local directory
 docker cp <container_id>:/workspace/specvalid/experiments/results ./results
-````
+```
 
 **Option 3: Interactive access**
 Keep the container running and access results interactively:
