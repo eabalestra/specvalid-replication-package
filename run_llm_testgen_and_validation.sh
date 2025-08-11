@@ -3,6 +3,8 @@
 source /workspace/specvalid/.venv/bin/activate
 
 models=$1
+prompts="General_V1"
+
 
 if [ -z "$models" ]; then
   echo "❌ Error: No models specified."
@@ -14,4 +16,4 @@ if [ -z "$models" ]; then
   exit 1
 fi
 
-python3 specvalid/experiments/run_testgen_experiments_pipeline.py -m "$models"
+python3 specvalid/experiments/run_testgen_experiments_pipeline.py -m "$models" -p "$prompts"
