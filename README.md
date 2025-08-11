@@ -21,30 +21,30 @@ docker run --gpus all -it specvalid
 **With AMD GPU:**
 
 ```bash
-docker run --device /dev/kfd --device /dev/dri -v ollama:/root/.ollama -p 11434:11434 -it specvalid
+docker run --device /dev/kfd --device /dev/dri -it specvalid
 ```
 
 **With external API services:**
 
 ```bash
 # For OpenAI models (GPT-4, GPT-4o, GPT-3.5-turbo, etc.)
-docker run -e OPENAI_API_KEY=your_openai_key --gpus all -it specvalid
+docker run -e OPENAI_API_KEY=your_openai_key --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
 
 # For Hugging Face models (Llama, Mistral, Phi, etc.)
-docker run -e HUGGINGFACE_API_KEY=your_hf_key --gpus all -it specvalid
+docker run -e HUGGINGFACE_API_KEY=your_hf_key --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
 
 # For Google Gemini models
-docker run -e GOOGLE_API_KEY=your_google_key --gpus all -it specvalid
+docker run -e GOOGLE_API_KEY=your_google_key --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
 
 # Multiple API keys
-docker run -e OPENAI_API_KEY=your_openai_key -e HUGGINGFACE_API_KEY=your_hf_key --gpus all -it specvalid
+docker run -e OPENAI_API_KEY=your_openai_key -e HUGGINGFACE_API_KEY=your_hf_key --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
 ```
 
 **For local Ollama models (no API key needed):**
 
 ```bash
-# Run container
-docker run --gpus all -it specvalid
+# Run container with volume mapping
+docker run --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
 
 # Inside container, pull desired models
 ollama pull llama3.2
@@ -53,14 +53,15 @@ ollama pull mistral
 ollama pull deepseek-r1:7b
 ```
 
-**To persist experiment results (recommended):**
+**To persist experiment results and outputs (recommended):**
 
 ```bash
-# Create local results directory
+# Create local directories
 mkdir -p ./results
+mkdir -p ./output
 
-# Run with volume mapping
-docker run --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -it specvalid
+# Run with volume mapping for both results and output
+docker run --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
 ```
 
 ### 3. Run Experiments
@@ -82,10 +83,10 @@ Example models: `llama3.2`, `codellama`, `gpt-4`, etc.
 
 ## Accessing Results
 
-Experiment results are saved in `/workspace/specvalid/experiments/results/` inside the container.
+Experiment results are saved in `/workspace/specvalid/experiments/results/` and outputs are saved in `/workspace/specvalid/output/` inside the container.
 
 **Option 1: Volume mapping (recommended)**
-Run with volume mapping as shown above to automatically save results to your local `./results` directory.
+Run with volume mapping as shown above to automatically save results to your local `./results` directory and outputs to your local `./output` directory.
 
 **Option 2: Copy from container**
 
@@ -93,15 +94,17 @@ Run with volume mapping as shown above to automatically save results to your loc
 # Find your container ID
 docker ps -a
 
-# Copy results from container to local directory
+# Copy results and outputs from container to local directories
 docker cp <container_id>:/workspace/specvalid/experiments/results ./results
+docker cp <container_id>:/workspace/specvalid/output ./output
 ```
 
 **Option 3: Interactive access**
 Keep the container running and access results interactively:
 
 ```bash
-# Inside container, view results
+# Inside container, view results and outputs
 ls /workspace/specvalid/experiments/results/
+ls /workspace/specvalid/output/
 cat /workspace/specvalid/experiments/results/test_generation_stats.csv
 ```
