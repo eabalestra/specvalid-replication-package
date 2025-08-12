@@ -37,7 +37,7 @@ docker run -e HUGGINGFACE_API_KEY=your_hf_key --gpus all -v $(pwd)/results:/work
 docker run -e GOOGLE_API_KEY=your_google_key --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
 
 # Multiple API keys
-docker run -e OPENAI_API_KEY=your_openai_key -e HUGGINGFACE_API_KEY=your_hf_key --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
+docker run -e OPENAI_API_KEY=your_openai_key -e GOOGLE_API_KEY=your_gemini_key -e HUGGINGFACE_API_KEY=your_hf_key --gpus all -v $(pwd)/results:/workspace/specvalid/experiments/results -v $(pwd)/output:/workspace/specvalid/output -it specvalid
 ```
 
 **For local Ollama models (no API key needed):**
