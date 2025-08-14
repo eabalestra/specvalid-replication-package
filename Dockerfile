@@ -26,7 +26,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /workspace
 
 # Clone repos
-RUN git clone https://github.com/eabalestra/specfuzzer-subject-results.git "${SPECS_DIR}" \
+RUN git clone https://github.com/eabalestra/specfuzzer-subject-results.git "${SPECS_DIR}"
+
+ARG CACHEBUST=1
+RUN echo $CACHEBUST \
     && git clone https://github.com/eabalestra/specvalid.git "${SPECVALID_DIR}"
 
 # Copy compressed files into image (from build context)
@@ -41,7 +44,7 @@ RUN unzip /workspace/daikon-5.8.2.zip -d /workspace/ \
 # Create virtualenv and install python deps for specvalid
 RUN python3 -m venv /workspace/specvalid/.venv \
     && /workspace/specvalid/.venv/bin/pip install --upgrade pip \
-    && /workspace/specvalid/.venv/bin/pip install -r /workspace/specvalid/requirements.txt \
+    && /workspace/specvalid/.venv/bin/pip install --no-cache-dir -r /workspace/specvalid/requirements.txt \
     && /workspace/specvalid/.venv/bin/pip install -e /workspace/specvalid
 
 COPY run_llm_testgen_and_validation.sh /workspace/run_llm_testgen_and_validation.sh
