@@ -1,6 +1,6 @@
 # Use the official Ollama image as base so runtime + GPU support is baked-in.
 # If you will run primarily on AMD/ROCm hosts, swap to: FROM ollama/ollama:rocm
-FROM ollama/ollama:latest
+FROM ollama/ollama:0.11.5
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DAIKONDIR=/workspace/daikon-5.8.2
@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     tar \
     openjdk-8-jdk \
-    python3 \
-    python3-venv \
+    python3.12 \
+    python3.12-venv \
     python3-pip \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
